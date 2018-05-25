@@ -7,14 +7,20 @@ let schemaName = 'Playlist'
 let songSchema = new Schema({
     title: {type: String, required: true},
     artist: {type: String, required: true},
-    collection: {type: String, required: true}
+    coll: {type: String, required: true}
     
 })
 
 let schema = new Schema({
+    title: {type: String, required:true},
     songs:[songSchema],
-    created: { type: Number, required: true, default: Date.now() },
+    created: {type: Number, required: true, default: Date.now() },
     userId: {type: ObjectId, ref: "User", required:true},
+})
+
+schema.pre('save', function(next){
+    this.markModified('songs')
+    next()
 })
 
 

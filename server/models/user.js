@@ -18,12 +18,12 @@ var schema = new Schema({
   hash: {
     type: String,
     required: true
-  },
-  role: {
-    type: String,
-    enum: ROLES,
-    default: ''
   }
+//   role: {
+//     type: String,
+//     enum: ROLES,
+//     default: ''
+//   }
 })
 
 schema.statics.generateHash = function (password) {

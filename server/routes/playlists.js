@@ -51,9 +51,11 @@ let session = require('../auth/session')
   })
   
   //EDIT
-  router.put('/api/playlists/:id', (req, res, next) => {
+  router.put('/api/playlists/:id/songs', (req, res, next) => {
     Playlists.findByIdAndUpdate(req.params.id, req.body, {new: true})
       .then(playlist => {
+        playlist.songs.$addtoset(req.body)
+        playlist.save()
         res.status(200).send({message: "Successfully Updated", playlist})
       })
       .catch(err => {

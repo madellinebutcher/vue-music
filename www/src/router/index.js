@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Playlist from '@/components/Playlist'
+import Playlist from '@/components/Playlist' //why red?!
 
 Vue.use(Router)
 

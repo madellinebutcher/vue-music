@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="home">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
@@ -90,6 +90,12 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  computed: {
+
+  },
+  methods: {
+    
   }
 }
 </script>

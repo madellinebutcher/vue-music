@@ -11,6 +11,12 @@ var api = axios.create({
   timeout: 3000
 })
 
+var apiDB = axios.create({
+  baseURL: 'mongodb://user:user@ds237707.mlab.com:37707/mjb-vue-music',
+  timeout: 3000
+
+})
+
 function swapUrlSize(url, pixels) {
   var sizeString = `${pixels}x${pixels}`;
   var newURL = url.replace("60x60", sizeString);

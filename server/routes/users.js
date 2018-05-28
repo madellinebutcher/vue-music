@@ -3,7 +3,6 @@ var Users = require('../models/user')
 //find users
 router.post('/api/login', (req, res, next) => {
   var user = req.body
-  console.log(user)
   Users.findOne({name:user.name})
     .then(findUser => {
       res.status(200).send(findUser)

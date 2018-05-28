@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Playlist from '@/components/Playlist' //why red?!
+
 
 Vue.use(Router)
 
@@ -11,11 +11,6 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
-    },
-    {
-      path:'/playlist',
-      name: 'Playlist',
-      component: Playlist
     }
   ]
 })

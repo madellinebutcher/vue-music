@@ -11,13 +11,22 @@
       <div class="results">
         <h4>Results for {{title}}:</h4>
         <div class="row">
-          <songs :list="songs" button-text="Add to playlist" :handle-button-click="addSong"></songs>>
-        </div>
+          <ol>
+            <li v-for="song in songs">
+              <p>{{song.title}}</p> 
+              <p>{{song.artist}}</p>
+              <img :src="song.albumArt">
+              <p>{{song.collection}}</p>
+              <audio controls controlsList="nodownload" :src="song.preview"></audio>
+            </li>
+          </ol>
+          <songs :list="songs" button-text="Add to playlist" :handle-button-click="addSongToPlaylist"></songs>
+        </div>  
       </div>
       <hr>
       <div class="playlist">
         <div class="row">
-          <songs :list="playlist" button-text="Remove from playlist" :handle-button-click="removeSong"></songs>
+          <songs :list="playlist" button-text="Remove from playlist" :handle-button-click="removeSongFromPlaylist"></songs>
         </div>
       </div>
     </div>
@@ -30,7 +39,7 @@
 </template>
 
 <script>
-  import Playlist from './Playlist.vue'
+  import songs from './songs.vue'
   export default {
     name: 'Home',
     components: {
@@ -48,10 +57,10 @@
       },
       playlist() {
         return this.$store.state.playlist
-      },
-      activeSong() {
-        return this.$store.state.activeSong
       }
+      // activeSong() {
+      //   return this.$store.state.activeSong
+      // }
     },
     methods: {
       findSongs() {
@@ -79,6 +88,9 @@
     grid-area: results
   }
   .playlist {
-    grid-area: watchlist
+    grid-area: playlist
+  }
+  ol{
+    list-style-type: none;
   }
 </style>

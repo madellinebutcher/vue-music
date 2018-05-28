@@ -1,12 +1,12 @@
 <template>
         <div class="Auth">
       
-          <div class="row login text-white d-flex align-items-center" v-if="showLogin">
+          <div class="row login d-flex align-items-center" v-if="showLogin">
             <h1>Login</h1>
             <form v-on:submit.prevent="login" class="form">
               <input class="input" type="text" name="name" placeholder=" username" id="name" v-model="user.username">
               <input class="input" type="text" name="name" placeholder=" displayName" id="name" v-model="user.displayName">
-              <button class="butt" type="submit">Login</button>
+              <button  type="submit">Login</button>
             </form>
             <p class="user">Not a user ?
               <em @click="toggle">Register</em>

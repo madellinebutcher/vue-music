@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <h1><img class="v"src="./assets/logo.png">ue the Music</h1>
     <router-view/>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Shadows Into Light Two', cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -21,7 +21,7 @@ export default {
   margin-top: 60px;
   
 }
-img{
-  size:2rem;
+.v{
+  size:15px;
 }
 </style>

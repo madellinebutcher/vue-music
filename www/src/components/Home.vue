@@ -11,17 +11,8 @@
       <div class="results">
         <h4>Results for {{title}}:</h4>
         <div class="row">
-          <ol>
-            <li v-for="song in songs">
-              <p>{{song.title}}</p> 
-              <p>{{song.artist}}</p>
-              <img :src="song.albumArt">
-              <p>{{song.collection}}</p>
-              <audio controls controlsList="nodownload" :src="song.preview"></audio>
-            </li>
-          </ol>
-          <songs :list="songs" button-text="Add to playlist" :handle-button-click="addSongToPlaylist"></songs>
-        </div>  
+          <songs :list="songs" button-text="Add to playlist" :handle-button-click="addSongToPlaylist" @submit.prevent="addSongToPlaylist"></songs>
+        </div>
       </div>
       <hr>
       <div class="playlist">
@@ -31,9 +22,9 @@
       </div>
     </div>
 
-    <div class="detailed-view">
+    <!-- <div class="detailed-view">
       details here
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -69,10 +60,10 @@
         this.query = ''
       },
       addSongToPlaylist(song) {
-        this.$store.dispatch('addSong', song)
+        this.$store.dispatch('addSongToPlaylist', song)
       },
       removeSongFromPlaylist(song) {
-        this.$store.dispatch('removeSong', song)
+        this.$store.dispatch('removeSongFromPlaylist', song)
       }
     }
   }
@@ -84,13 +75,16 @@
     display: grid;
     grid-template-areas: "results playlist"
   }
+
   .results {
     grid-area: results
   }
+
   .playlist {
     grid-area: playlist
   }
-  ol{
+
+  ol {
     list-style-type: none;
   }
 </style>

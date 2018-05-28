@@ -43,7 +43,7 @@ export default new vuex.Store({
   actions:{
     addSongToPlaylist({commit, dispatch, state}, song){
       commit('addSongToPlaylist', song)
-      router.push({name: 'song'})
+      // router.push({name: ''})
     },
     findSongs({commit, dispatch}, query){
       api.get('search?media=music&term=' + query)
@@ -62,10 +62,14 @@ export default new vuex.Store({
           commit('setSongs', songList)
         })
     },
-    getTracks() { },
-    addTrack() { },
-    removeTrack() { },
-    promoteTrack() { },
-    demoteTrack() { }
+    removeSongFromPlaylist({dispatch, commit, state}, song){
+      var index = state.playlist.findIndex(s=> s.id==song.id)
+        commit('removeSongFromPlaylist', index)
+    }
+    // getTracks() { },
+    // addTrack() { },
+    // removeTrack() { },
+    // promoteTrack() { },
+    // demoteTrack() { }
   }
 })

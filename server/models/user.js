@@ -14,11 +14,11 @@ var schema = new Schema({
   displayName: {
     type: String,
     required: true,
-  },
-  hash: {
-    type: String,
-    required: true
   }
+  // hash: {
+  //   type: String,
+  //   required: true
+  // }
 //   role: {
 //     type: String,
 //     enum: ROLES,
@@ -26,13 +26,13 @@ var schema = new Schema({
 //   }
 })
 
-schema.statics.generateHash = function (password) {
-  return bcrypt.hashSync(password, SALT)
-}
+// schema.statics.generateHash = function (password) {
+//   return bcrypt.hashSync(password, SALT)
+// }
 
-schema.methods.validatePassword = function (password) {
-  return bcrypt.compare(password, this.hash)
-}
+// schema.methods.validatePassword = function (password) {
+//   return bcrypt.compare(password, this.hash)
+// }
 
 
 

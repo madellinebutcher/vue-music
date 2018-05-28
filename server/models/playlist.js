@@ -15,13 +15,13 @@ let schema = new Schema({
     title: {type: String, required:true},
     songs:[songSchema],
     created: {type: Number, required: true, default: Date.now() },
-    // userId: {type: ObjectId, ref: "User", required:true},
+    userId: {type: ObjectId, ref: "User", required:true},
 })
 
-schema.pre('save', function(next){
-    this.markModified('songs')
-    next()
-})
+// schema.pre('save', function(next){
+//     this.markModified('songs')
+//     next()
+// })
 
 
 module.exports = mongoose.model(schemaName, schema)

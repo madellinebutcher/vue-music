@@ -11,10 +11,9 @@ var api = axios.create({
   timeout: 3000
 })
 
-var apiDB = axios.create({
-  baseURL: 'mongodb://user:user@ds237707.mlab.com:37707/mjb-vue-music',
+var server = axios.create({
+  baseURL: 'http://localhost:3000',
   timeout: 3000
-
 })
 
 function swapUrlSize(url, pixels) {
@@ -28,18 +27,28 @@ function swapUrlSize(url, pixels) {
 export default new vuex.Store({
   state:{
     songs: [],
-    playlist: []
-    // activeSong: {}
+    playlists: [],
+    activeList: {},
+    user: {}
   },
   mutations:{
-    addSongToPlaylist(state, song){
-      state.playlist.push(song)
+    addSongToPlaylist(state, newList){
+      state.activeList = newList
     },
     removeSongFromPlaylist(state, indexToRemove){
-      state.playlist.splice(indexToRemove, 1)
+      state.playlists.splice(indexToRemove, 1)
     },
     setSongs(state, songs){
       state.songs = songs
+    },
+    setUser(state, user) {
+      state.user = user
+    },
+    setPlaylists(state, lists) {
+      state.playlists = lists
+    },
+    setActivePlaylist(state, list) {
+      state.activeList = list
     }
     // setActiveSong(state, song){
     //   state.activeSong = song
@@ -48,7 +57,11 @@ export default new vuex.Store({
   },
   actions:{
     addSongToPlaylist({commit, dispatch, state}, song){
-      commit('addSongToPlaylist', song)
+      state.activeList.songs.push(song)
+      server.put('/playlists/' + state.activeList._id, state.activeList)
+       .then(newList => {
+        commit('addSongToPlaylist', newList)
+       })
       // router.push({name: ''})
     },
     findSongs({commit, dispatch}, query){
@@ -69,8 +82,31 @@ export default new vuex.Store({
         })
     },
     removeSongFromPlaylist({dispatch, commit, state}, song){
-      var index = state.playlist.findIndex(s=> s.id==song.id)
+      var index = state.playlists.findIndex(s=> s.id==song.id)
         commit('removeSongFromPlaylist', index)
+    },
+    addUser({dispatch, commit}, user) {
+      server.post('/api/create', user)
+       .then(newUser => {
+         commit('setUser', newUser)
+         router.push('/home')
+       })
+    },
+    getUser({dispatch, commit}, user) {
+      server.post('/api/login', user) 
+       .then(newUser => {
+         commit('setUser', newUser)
+       })
+    },
+    getPlaylists({dispatch, commit, state}){
+      server.get('/api/user-playlists/' + state.user._id)
+       .then(lists => {
+         commit('setPlaylists', lists)
+       }
+       )
+    },
+    activePlaylist({dispatch, commit}, list) {
+      commit('setActivePlaylist', list)
     }
     // getTracks() { },
     // addTrack() { },

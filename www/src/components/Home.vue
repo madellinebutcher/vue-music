@@ -6,6 +6,9 @@
         <input type="text" v-model="query">
       </form>
     </div>
+    <div>
+      <button v-for="playlist in playlists" @click="activePlaylist(playlist)">{{playlist.title}}</button>
+    </div>
     <div class="songs-section">
 
       <div class="results">
@@ -17,14 +20,14 @@
       <hr>
       <div class="playlist">
         <div class="row">
-          <songs :list="playlist" button-text="Remove from playlist" :handle-button-click="removeSongFromPlaylist"></songs>
+          <songs :list="playlists" button-text="Remove from playlist" :handle-button-click="removeSongFromPlaylist"></songs>
         </div>
       </div>
     </div>
 
-    <!-- <div class="detailed-view">
-      details here
-    </div> -->
+    <div class="detailed-view">
+     
+    </div>
 
   </div>
 </template>
@@ -36,6 +39,9 @@
     components: {
       songs
     },
+    mounted(){
+      this.$store.dispatch('getPlaylists')
+    },
     data() {
       return {
         query: '',
@@ -46,8 +52,8 @@
       songs() {
         return this.$store.state.songs
       },
-      playlist() {
-        return this.$store.state.playlist
+      playlists() {
+        return this.$store.state.playlists
       }
       // activeSong() {
       //   return this.$store.state.activeSong
@@ -64,6 +70,9 @@
       },
       removeSongFromPlaylist(song) {
         this.$store.dispatch('removeSongFromPlaylist', song)
+      },
+      activePlaylist(list) {
+        this.$store.dispatch('activePlaylist', list)
       }
     }
   }

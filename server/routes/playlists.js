@@ -37,6 +37,18 @@ let session = require('../auth/session')
         })
     }
   })
+
+  router.get('/api/user-playlists/:_id', (req, res) => {
+    Playlists.find({
+      userId: req.params._id
+    })
+     .then(lists => {
+       res.status(200).send(lists)
+     })
+     .catch(err => {
+      res.status(400).send(err)
+     })
+  })
   
   //ADD
   router.post('/api/playlists', (req, res, next) => {
@@ -51,11 +63,11 @@ let session = require('../auth/session')
   })
   
   //EDIT
-  router.put('/api/playlists/:id/songs', (req, res, next) => {
-    Playlists.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  router.put('/playlists/:_id', (req, res) => {
+    Playlists.findByIdAndUpdate(req.params._id, req.body, {new: true})
       .then(playlist => {
-        playlist.songs.$addtoset(req.body)
-        playlist.save()
+        // playlist.songs.$addtoset(req.body)
+        // playlist.save()
         res.status(200).send({message: "Successfully Updated", playlist})
       })
       .catch(err => {

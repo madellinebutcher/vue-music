@@ -29,7 +29,7 @@ export default new vuex.Store({
     songs: [],
     playlists: [],
     activeList: {},
-    user: {}
+    // user: {}
   },
   mutations:{
     addSongToPlaylist(state, newList){
@@ -41,9 +41,9 @@ export default new vuex.Store({
     setSongs(state, songs){
       state.songs = songs
     },
-    setUser(state, user) {
-      state.user = user
-    },
+    // setUser(state, user) {
+    //   state.user = user
+    // },
     setPlaylists(state, lists) {
       state.playlists = lists
     },
@@ -58,7 +58,7 @@ export default new vuex.Store({
   actions:{
     addSongToPlaylist({commit, dispatch, state}, song){
       state.activeList.songs.push(song)
-      server.put('/playlists/' + state.activeList._id, state.activeList)
+      server.put('/playlists/' + state.activeList.id, state.activeList)
        .then(newList => {
         commit('addSongToPlaylist', newList)
        })
@@ -85,22 +85,22 @@ export default new vuex.Store({
       var index = state.playlists.findIndex(s=> s.id==song.id)
         commit('removeSongFromPlaylist', index)
     },
-    addUser({dispatch, commit}, user) {
-      server.post('/api/register', user)
-       .then(newUser => {
-         commit('setUser', newUser)
-         router.push('/')
-       })
-    },
-    getUser({dispatch, commit}, user) {
-      server.post('/api/login', user) 
-       .then(newUser => {
-         commit('setUser', newUser)
-         router.push('/')
-       })
-    },
+    // addUser({dispatch, commit}, user) {
+    //   server.post('/api/register', user)
+    //    .then(newUser => {
+    //      commit('setUser', newUser)
+    //      router.push('/')
+    //    })
+    // },
+    // getUser({dispatch, commit}, user) {
+    //   server.post('/api/login', user) 
+    //    .then(newUser => {
+    //      commit('setUser', newUser)
+    //      router.push('/')
+    //    })
+    // },
     getPlaylists({dispatch, commit, state}){
-      server.get('/api/user-playlists/' + state.user.id)
+      server.get('/api/playlists/:id?')
        .then(lists => {
          commit('setPlaylists', lists)
        }

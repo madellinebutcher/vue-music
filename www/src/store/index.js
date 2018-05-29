@@ -86,20 +86,21 @@ export default new vuex.Store({
         commit('removeSongFromPlaylist', index)
     },
     addUser({dispatch, commit}, user) {
-      server.post('/api/create', user)
+      server.post('/api/register', user)
        .then(newUser => {
          commit('setUser', newUser)
-         router.push('/home')
+         router.push('/')
        })
     },
     getUser({dispatch, commit}, user) {
       server.post('/api/login', user) 
        .then(newUser => {
          commit('setUser', newUser)
+         router.push('/')
        })
     },
     getPlaylists({dispatch, commit, state}){
-      server.get('/api/user-playlists/' + state.user._id)
+      server.get('/api/user-playlists/' + state.user.id)
        .then(lists => {
          commit('setPlaylists', lists)
        }

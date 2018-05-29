@@ -40,7 +40,7 @@ let session = require('../auth/session')
 
   router.get('/api/user-playlists/:_id', (req, res) => {
     Playlists.find({
-      userId: req.params._id
+      userId: req.params.id
     })
      .then(lists => {
        res.status(200).send(lists)

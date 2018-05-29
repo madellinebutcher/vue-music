@@ -1,7 +1,7 @@
 <template>
         <div class="Auth">
       
-          <div class="row login d-flex align-items-center" v-if="showLogin">
+          <div class="login" v-if="showLogin">
             <h1>Login</h1>
             <form v-on:submit.prevent="login" class="form">
               <input class="input" type="text" name="name" placeholder=" username" id="name" v-model="user.username">
@@ -17,7 +17,7 @@
             <form v-on:submit.prevent="register">
               <input class="register" type="text" name="name" id="name" v-model="user.username">
               <input class="input" type="text" name="name" placeholder=" displayName" id="name" v-model="user.displayName">
-              <button class="butt" type="submit">Register</button>
+              <button type="submit">Register</button>
             </form>
             <p>Already a user?
               <em @click="toggle">Login</em>

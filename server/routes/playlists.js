@@ -67,7 +67,7 @@ let session = require('../auth/session')
   router.put('/api/playlists/:id/songs', (req, res) => {
     Playlist.findById(req.params.id)
     .then(function (playlist){
-      playlist.songs.addtoset(req.body)
+      playlist.songs.addToSet(req.body)
       playlist.save()
       res.send(playlist)
     })

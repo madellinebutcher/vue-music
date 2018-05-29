@@ -14,11 +14,11 @@ let songSchema = new Schema({
 let schema = new Schema({
     title: {type: String, required:true},
     songs:[songSchema],
-    created: {type: Number, required: true, default: Date.now() },
-    userId: {type: ObjectId, ref: "User", required:true},
+    // created: {type: Number, required: true, default: Date.now() },
+    // userId: {type: ObjectId, ref: "User", required:true},
 })
 
-schema.pre('save', (next)=>{
+schema.pre('save', function(next){
     this.markModified('songs')
     next()
 })

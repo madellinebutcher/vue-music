@@ -1,5 +1,5 @@
 var router = require('express').Router()
-var Playlists = require('../models/playlist')
+var Playlist = require('../models/playlist')
 // var Users = require('../models/user')
 let session = require('../auth/session')
 
@@ -18,9 +18,9 @@ let session = require('../auth/session')
 //   })
   
   //GET BY ID
-  router.get('/api/playlists/:id?', (req, res, next)=>{
+  router.get('/api/playlists/:id?', (req, res)=>{
     if(req.params.id){
-      Playlists.findById(req.params.id)
+      Playlist.findById(req.params.id)
         .then(playlist =>{
           return res.status(200).send(playlist)
         })
@@ -28,32 +28,32 @@ let session = require('../auth/session')
           return res.status(400).send(err)
         })
     }else{
-      Playlists.find({})
+      Playlist.find({})
         .then(playlist => {
-          res.status(200).send(playlist)
+          return res.status(200).send(playlist)
         })
         .catch(err => {
-          res.status(400).send(err)
+          return res.status(400).send(err)
         })
     }
   })
 
-  router.get('/api/user-playlists/:_id', (req, res) => {
-    Playlists.find({
-      userId: req.params.id
-    })
-     .then(lists => {
-       res.status(200).send(lists)
-     })
-     .catch(err => {
-      res.status(400).send(err)
-     })
-  })
+  // router.get('/api/user-playlists/:_id', (req, res) => {
+  //   Playlist.find({
+  //     userId: req.params.id
+  //   })
+  //    .then(lists => {
+  //      res.status(200).send(lists)
+  //    })
+  //    .catch(err => {
+  //     res.status(400).send(err)
+  //    })
+  // })
   
   //ADD
-  router.post('/api/playlists', (req, res, next) => {
+  router.post('/api/playlists', (req, res) => {
     var playlist = req.body
-    Playlists.create(playlist)
+    Playlist.create(playlist)
       .then(newPlaylist => {
         res.status(200).send(newPlaylist)
       })
@@ -63,21 +63,34 @@ let session = require('../auth/session')
   })
   
   //EDIT
-  router.put('/playlists/:_id', (req, res) => {
-    Playlists.findByIdAndUpdate(req.params._id, req.body, {new: true})
-      .then(playlist => {
-        // playlist.songs.$addtoset(req.body)
-        // playlist.save()
-        res.status(200).send({message: "Successfully Updated", playlist})
+  //add a single song REQ.BODY will be a song object
+  router.put('/api/playlists/:id/songs', (req, res) => {
+    Playlist.findById(req.params.id)
+    .then(function (playlist){
+      playlist.songs.addtoset(req.body)
+      playlist.save()
+      res.send(playlist)
+    })
+    .catch(err => {
+      res.status(400).send(err)
+    })
+  })
+  //update entire song array from entire playlist
+  router.put('/api/playlists/:id', (req, res)=>{
+    Playlist.findByIdAndUpdate(req.params.id, req.body, {new: true})
+      .then(playlist=>{
+        res.send(playlist)
       })
-      .catch(err => {
+      .catch(err=>{
         res.status(400).send(err)
       })
   })
   
+  
+  
   //DESTROY
-  router.delete('/api/playlist/:id', (req, res, next)=>{
-    Playlists.findByIdAndRemove(req.params.id)
+  router.delete('/api/playlists/:id', (req, res, next)=>{
+    Playlist.findByIdAndRemove(req.params.id)
       .then(data=>{
         res.send("Successfully Deleted Playlist")
       })

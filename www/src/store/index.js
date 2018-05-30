@@ -4,17 +4,19 @@ import axios from 'axios'
 import router from '../router'
 import store from '../store'
 
-vue.use(vuex)
 
 var api = axios.create({
   baseURL: 'https://itunes.apple.com/',
   timeout: 3000
 })
 
+
 var server = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:3000/',
   timeout: 3000
 })
+
+vue.use(vuex)
 
 function swapUrlSize(url, pixels) {
   var sizeString = `${pixels}x${pixels}`;
@@ -32,8 +34,8 @@ export default new vuex.Store({
     // user: {}
   },
   mutations:{
-    addSongToPlaylist(state, newList){
-      state.activeList = newList
+    addSongToPlaylist(state, song){
+      state.playlists.push(song)
     },
     removeSongFromPlaylist(state, indexToRemove){
       state.playlists.splice(indexToRemove, 1)
@@ -57,12 +59,8 @@ export default new vuex.Store({
   },
   actions:{
     addSongToPlaylist({commit, dispatch, state}, song){
-      state.activeList.songs.push(song)
-      server.put('/playlists/' + state.activeList.id, state.activeList)
-       .then(newList => {
-        commit('addSongToPlaylist', newList)
-       })
-      // router.push({name: ''})
+      commit('addSongToPlaylist', song)
+      // router.push({name: 'song'})
     },
     findSongs({commit, dispatch}, query){
       api.get('search?media=music&term=' + query)
@@ -70,7 +68,7 @@ export default new vuex.Store({
           var songList = res.data.results.map(function (song){ 
             return {
             title: song.trackName,
-            albumArt: swapUrlSize(song.artworkUrl60, 275),
+            albumArt: swapUrlSize(song.artworkUrl60, 275), //? song.artworkUrl100.replace('100x100, '250x250') : '/placehold.it/250x250
             artist: song.artistName,
             collection: song.collectionName,
             // price: song.collectionPrice,
@@ -99,13 +97,12 @@ export default new vuex.Store({
     //      router.push('/')
     //    })
     // },
-    getPlaylists({dispatch, commit, state}){
-      server.get('/api/playlists/:id?')
-       .then(lists => {
-         commit('setPlaylists', lists)
-       }
-       )
-    },
+    // getPlaylists({dispatch, commit, state}){
+    //   server.get('/api/playlists/:id?')
+    //    .then(lists => {
+    //      commit('setPlaylists', lists)
+    //    })
+    // },
     activePlaylist({dispatch, commit}, list) {
       commit('setActivePlaylist', list)
     }

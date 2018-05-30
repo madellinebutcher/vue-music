@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
         <div class="Auth">
       
           <div class="login" v-if="showLogin">
@@ -56,4 +56,4 @@
       </script>
       <style scoped>
       
-      </style>
+      </style> -->

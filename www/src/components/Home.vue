@@ -33,15 +33,15 @@
 </template>
 
 <script>
-  import songs from './songs.vue'
+  import songs from './songs'
   export default {
     name: 'Home',
     components: {
       songs
     },
-    mounted(){
-      this.$store.dispatch('getPlaylists')
-    },
+    // mounted(){
+    //   this.$store.dispatch('getPlaylists')
+    // },
     data() {
       return {
         query: '',

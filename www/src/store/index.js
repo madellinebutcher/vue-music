@@ -5,6 +5,7 @@ import router from '../router'
 import store from '../store'
 
 
+
 var api = axios.create({
   baseURL: 'https://itunes.apple.com/',
   timeout: 3000
@@ -23,9 +24,8 @@ function swapUrlSize(url, pixels) {
   var newURL = url.replace("60x60", sizeString);
   return newURL;
 }
-// var musicAPI = axios.create({
-//   baseURL:
-// })
+
+
 export default new vuex.Store({
   state:{
     songs: [],
@@ -42,6 +42,9 @@ export default new vuex.Store({
     },
     setSongs(state, songs){
       state.songs = songs
+    },
+    addPlaylist(state, playlist){
+      state.playlists.push(playlist)
     },
     // setUser(state, user) {
     //   state.user = user
@@ -79,9 +82,27 @@ export default new vuex.Store({
           commit('setSongs', songList)
         })
     },
+    getPlaylists({commit, dispatch, state}, playlist){
+      server.get('api/playlists/')
+      .then(res=> {
+        commit('getPlaylists', playlist)
+      })
+    },
     removeSongFromPlaylist({dispatch, commit, state}, song){
       var index = state.playlists.findIndex(s=> s.id==song.id)
         commit('removeSongFromPlaylist', index)
+    },
+    createPlaylist({commit, dispatch}, playlist){
+      server.post('api/playlists', playlist)
+        .then(res=>{
+          commit('addPlaylist', res.data)
+        })
+    },
+    getAllPlaylist({commit, dispatch}, playlist){
+      server.get('api/playlists')
+        .then(res=> {
+          commit('setActivePlaylist',res.data)
+        })
     },
     // addUser({dispatch, commit}, user) {
     //   server.post('/api/register', user)

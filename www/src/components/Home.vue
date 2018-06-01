@@ -6,9 +6,7 @@
         <input type="text" v-model="query">
       </form>
     </div>
-    <div>
-      <button v-for="playlist in playlists" @click="activePlaylist(playlist)">{{playlist.title}}</button>
-    </div>
+    
     <div class="songs-section">
 
       <div class="results">
@@ -19,6 +17,7 @@
       </div>
       <hr>
       <div class="playlist">
+        <h3>Playlist</h3>
         <div class="row">
           <songs :list="playlists" button-text="Remove from playlist" :handle-button-click="removeSongFromPlaylist"></songs>
         </div>
@@ -34,10 +33,12 @@
 
 <script>
   import songs from './songs'
+  import userPlaylist from './userPlaylist'
   export default {
     name: 'Home',
     components: {
-      songs
+      songs,
+      userPlaylist
     },
     // mounted(){
     //   this.$store.dispatch('getPlaylists')

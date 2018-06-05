@@ -30,7 +30,7 @@ export default new vuex.Store({
   state:{
     songs: [],
     playlists: [],
-    activeList: {},
+    activePlaylist: {},
     // user: {}
   },
   mutations:{
@@ -53,7 +53,7 @@ export default new vuex.Store({
       state.playlists = lists
     },
     setActivePlaylist(state, list) {
-      state.activeList = list
+      state.activePlaylist = list
     }
     // setActiveSong(state, song){
     //   state.activeSong = song
@@ -61,8 +61,12 @@ export default new vuex.Store({
 
   },
   actions:{
-    addSongToPlaylist({commit, dispatch, state}, song){
-      commit('addSongToPlaylist', song)
+    addSongToPlaylist({commit, dispatch, state}, payload){
+      server.put('/api/playlists/' + payload.playlistId + '/songs', payload.song)
+        .then(res =>{
+          dispatch('getActivePlaylist', payload.playlistId) 
+        })
+      // commit('addSongToPlaylist', payload.song)
       // router.push({name: 'song'})
     },
     findSongs({commit, dispatch}, query){
@@ -82,12 +86,12 @@ export default new vuex.Store({
           commit('setSongs', songList)
         })
     },
-    getPlaylists({commit, dispatch, state}, playlist){
-      server.get('api/playlists/')
-      .then(res=> {
-        commit('getPlaylists', playlist)
-      })
-    },
+    // getPlaylists({commit, dispatch, state}, playlist){
+    //   server.get('api/playlists/')
+    //   .then(res=> {
+    //     commit('getPlaylists', playlist)
+    //   })
+    // },
     removeSongFromPlaylist({dispatch, commit, state}, song){
       var index = state.playlists.findIndex(s=> s.id==song.id)
         commit('removeSongFromPlaylist', index)
@@ -95,13 +99,13 @@ export default new vuex.Store({
     createPlaylist({commit, dispatch}, playlist){
       server.post('api/playlists', playlist)
         .then(res=>{
-          commit('addPlaylist', res.data)
+          dispatch('getAllPlaylist', res.data)
         })
     },
-    getAllPlaylist({commit, dispatch}, playlist){
+    getAllPlaylist({commit, dispatch}){
       server.get('api/playlists')
         .then(res=> {
-          commit('setActivePlaylist',res.data)
+          commit('setPlaylists',res.data)
         })
     },
     // addUser({dispatch, commit}, user) {
@@ -126,6 +130,13 @@ export default new vuex.Store({
     // },
     activePlaylist({dispatch, commit}, list) {
       commit('setActivePlaylist', list)
+    },
+    getActivePlaylist({dispatch, commit}, playlistId){
+      debugger
+      server.get('/api/playlists/' + playlistId )
+        .then(res=> {
+          commit('setActivePlaylist', res.data)
+        })
     }
     // getTracks() { },
     // addTrack() { },

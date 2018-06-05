@@ -12,12 +12,13 @@
       <div class="results">
         <h4>Results for {{title}}:</h4>
         <div class="row">
-          <songs :list="songs" button-text="Add to playlist" :handle-button-click="addSongToPlaylist" @submit.prevent="addSongToPlaylist"></songs>
+          <songs :list="songs" button-text="Add to playlist" :handle-button-click="addSongToPlaylist"></songs>
         </div>
       </div>
       <hr>
       <div class="playlist">
-        <h3>Playlist</h3>
+        <input type="text" v-model="playlist.title">
+        <button @click="createPlaylist">Create Playlist</button>
         <div class="row">
           <songs :list="playlists" button-text="Remove from playlist" :handle-button-click="removeSongFromPlaylist"></songs>
         </div>
@@ -27,7 +28,10 @@
     <div class="detailed-view">
      
     </div>
-
+    <div v-for="playlist in playlists">
+      <p>{{playlist.title}}</p>
+      <button @click="setActivePlaylist(playlist)">Choose Playlist</button>
+    </div>
   </div>
 </template>
 
@@ -40,13 +44,14 @@
       songs,
       userPlaylist
     },
-    // mounted(){
-    //   this.$store.dispatch('getPlaylists')
-    // },
+    mounted(){
+      this.$store.dispatch('getAllPlaylist')
+    },
     data() {
       return {
         query: '',
-        title: ''
+        title: '',
+        playlist:{}
       }
     },
     computed: {
@@ -55,10 +60,10 @@
       },
       playlists() {
         return this.$store.state.playlists
+      },
+      activePlaylist() {
+        return this.$store.state.activePlaylist
       }
-      // activeSong() {
-      //   return this.$store.state.activeSong
-      // }
     },
     methods: {
       findSongs() {
@@ -67,13 +72,18 @@
         this.query = ''
       },
       addSongToPlaylist(song) {
-        this.$store.dispatch('addSongToPlaylist', song)
+        this.$store.dispatch('addSongToPlaylist', {song: song, playlistId: this.activePlaylist._id})
+        debugger
       },
       removeSongFromPlaylist(song) {
         this.$store.dispatch('removeSongFromPlaylist', song)
       },
-      activePlaylist(list) {
+      setActivePlaylist(list) {
         this.$store.dispatch('activePlaylist', list)
+      }, 
+      createPlaylist(){
+        this.$store.dispatch('createPlaylist', this.playlist)
+        this.playlist = {}
       }
     }
   }
